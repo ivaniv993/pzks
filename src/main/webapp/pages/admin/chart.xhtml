@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Internet Shop</title>
+    <h:outputScript library="js" name="product.js"/>
+    <script type="application/javascript"
+            src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=places"></script>
+    <h:outputStylesheet library="css" name="input-field-layout.css"/>
+
+</h:head>
+
+<h:body>
+    <p:layout style="min-width:400px;min-height:50px;" id="main-layout">
+        <p:layoutUnit position="north" size="150" resizable="true"  style="height: 35px" closable="true" collapsible="true">
+            <h:form>
+                <h:panelGroup>
+                    <p:commandButton value="Level" type="button" icon="ui-icon-plus"/>
+                    <p:commandButton value="Start node" type="button" icon="ui-icon-plus" />
+                    <p:commandButton value="End node" type="button" icon="ui-icon-plus"/>
+                </h:panelGroup>
+            </h:form>
+        </p:layoutUnit>
+        <p:layoutUnit position="center" resizable="true" style="height:900px;overflow: hidden">
+            <style type="text/css">
+                .ui-diagram-element {
+                    width:5em;
+                    height:5em;
+                    line-height:5em;
+                    text-align: center;
+                    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+                    border-radius: 5em;
+                    border: 1px solid #404a4e;
+                    background-color: #404a4e;
+                    color: #cccccc;
+                }
+
+                .ui-diagram-element:hover {
+                    background-color: #20282b;
+                }
+            </style>
+
+            <p:diagram value="#{diagramHierarchicalView.model}" style="height:750px" styleClass="ui-widget-content"/>
+        </p:layoutUnit>
+    </p:layout>
+</h:body>
+</html>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Internet Shop</title>
+    <h:outputStylesheet name="bootstrap/css/bootstrap.css"/>
+    <h:outputStylesheet name="project/css/layouts.css"/>
+    <h:outputScript name="bootstrap/js/bootstrap.js"/>
+
+</h:head>
+
+<h:body>
+    <h:form>
+        <p:growl id="messages"/>
+
+        <p:menubar>
+            <p:menuitem value="User" url="#" icon="ui-icon-pencil"/>
+            <p:menuitem value="User-backed" url="backed.jsf" icon="ui-icon-pencil"/>
+            <p:submenu label="Help" icon="ui-icon-help">
+                <p:menuitem value="Contact" url="#" />
+                <p:menuitem value="About" url="#" />
+            </p:submenu>
+
+            <f:facet name="options">
+                <p:inputText style="margin-right:10px" placeholder="Search"/>
+                <p:commandButton type="button" value="Logout" icon="ui-icon-extlink"/>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+    <p:layout>
+        <p:layoutUnit position="west" resizable="true" size="550" minSize="500" maxSize="600">
+
+            <h:form>
+                <p:growl id="messages1" showDetail="true"/>
+
+                <p:tieredMenu style="width:200px" var="prodType" value="#{menuView.assembledProductType.entrySet}">
+                    <p:submenu label="#{prodType.key}" var="prodSubType" value="#{prodType.value}" icon="ui-icon-refresh">
+                        <p:menuitem  var="prodCategories" value="#{prodType.value}"  update="messages1"
+                                    icon="ui-icon-disk"/>
+                    </p:submenu>
+                    <p:submenu label="Ajax Menuitems" icon="ui-icon-refresh">
+                        <p:menuitem value="Save" actionListener="#{menuView.save}" update="messages1"
+                                    icon="ui-icon-disk"/>
+                        <p:menuitem value="Update" actionListener="#{menuView.update}" update="messages1"
+                                    icon="ui-icon-arrowrefresh-1-w"/>
+                    </p:submenu>
+                    <p:submenu label="Ajax Menuitems" icon="ui-icon-refresh">
+                        <p:menuitem value="Save" actionListener="#{menuView.save}" update="messages1"
+                                    icon="ui-icon-disk"/>
+                        <p:menuitem value="Update" actionListener="#{menuView.update}" update="messages1"
+                                    icon="ui-icon-arrowrefresh-1-w"/>
+                    </p:submenu>
+                    <p:submenu label="Non-Ajax Menuitem" icon="ui-icon-newwin">
+                        <p:menuitem value="Delete" actionListener="#{menuView.delete}" update="messages1"
+                                    ajax="false" icon="ui-icon-close"/>
+                    </p:submenu>
+                    <p:separator/>
+                    <p:submenu label="Navigations" icon="ui-icon-extlink">
+                        <p:submenu label="Prime Links">
+                            <p:menuitem value="Prime" url="http://www.prime.com.tr" title="xxx"/>
+                            <p:menuitem value="PrimeFaces" url="http://www.primefaces.org"/>
+                        </p:submenu>
+                        <p:menuitem value="Mobile" outcome="welcome"/>
+                    </p:submenu>
+                </p:tieredMenu>
+
+                <p:separator/>
+
+                <p:commandButton id="dynaButton" value="Show" type="button" icon="ui-icon-extlink"/>
+                <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom"
+                              style="width:200px">
+                    <p:submenu label="Ajax Menuitems">
+                        <p:menuitem value="Save" actionListener="#{menuView.save}" update="messages1"
+                                    icon="ui-icon-disk"/>
+                        <p:menuitem value="Update" actionListener="#{menuView.update}" update="messages1"
+                                    icon="ui-icon-arrowrefresh-1-w"/>
+                    </p:submenu>
+                    <p:submenu label="Non-Ajax Menuitem">
+                        <p:menuitem value="Delete" actionListener="#{menuView.delete}" update="messages1"
+                                    ajax="false" icon="ui-icon-close"/>
+                    </p:submenu>
+                    <p:submenu label="Navigations" icon="ui-icon-extlink">
+                        <p:submenu label="Prime Links">
+                            <p:menuitem value="Prime" url="http://www.prime.com.tr"/>
+                            <p:menuitem value="PrimeFaces" url="http://www.primefaces.org"/>
+                        </p:submenu>
+                        <p:menuitem value="Mobile" outcome="welcome"/>
+                    </p:submenu>
+                </p:tieredMenu>
+            </h:form>
+
+        </p:layoutUnit>
+
+        <p:layoutUnit position="center">
+            <h:form>
+                <p:growl id="msgs" showDetail="true"/>
+                <p:fieldset legend="Product1" toggleable="true" toggleSpeed="500">
+                    <p:ajax event="toggle" listener="#{menuView.handleToggle}" update="msgs"/>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:graphicImage
+                                name="resources/project/image/godfather2.jpg"/>
+                        <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.
+    In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,
+    killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."></h:outputText>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Product1" toggleable="true" toggleSpeed="500">
+                    <p:ajax event="toggle" listener="#{menuView.handleToggle}" update="msgs"/>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:graphicImage
+                                name="resources/project/image/godfather2.jpg"/>
+                        <h:outputText value="Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather, parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream.
+    In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy,
+    killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows."></h:outputText>
+                    </h:panelGrid>
+                </p:fieldset>
+                <h:commandButton action="#{menuView.save}" value="welcome"/>
+            </h:form>
+        </p:layoutUnit>
+    </p:layout>
+
+</h:body>
+</html>
