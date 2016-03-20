@@ -9,7 +9,7 @@
 
 <h:head>
 
-    <title>Internet Shop</title>
+    <title>PZCS</title>
     <h:outputScript library="js" name="product.js"/>
     <script type="application/javascript"
             src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;signed_in=true&amp;libraries=places"></script>
@@ -26,21 +26,29 @@
 
     <p:layout style="min-width:400px;min-height:200px;" id="main-layout">
         <p:layoutUnit position="north" size="150" resizable="true" closable="true" collapsible="true">
-            <h:form>
+            <h:form id="control_form">
                 <h:panelGroup>
-                    <p:commandButton value="New graph" type="button" icon="ui-icon-plus"/>
+                    <p:commandButton value="New graph" icon="ui-icon-plus"
+                                     actionListener="#{taskGraphController.onNewDiagram}"
+                                     update="diagram, element_panel"/>
 
-                    <p:commandButton value="Open" type="button" icon="ui-icon-plus"/>
+                    <p:commandButton value="Open"  icon="ui-icon-plus" />
 
-                    <p:commandButton value="Save" type="button" icon="ui-icon-plus"/>
+                    <p:commandButton value="Save" icon="ui-icon-plus"/>
                 </h:panelGroup>
             </h:form>
 
+            <h:panelGroup id="element_panel">
+                <p:commandButton id="add_vertex" value="New vertex" icon="ui-icon-plus"
+                                 actionListener="#{taskGraphController.addNewVertex}"
+                                  update="diagram"/>
+
+            </h:panelGroup>
         </p:layoutUnit>
 
         <p:layoutUnit position="center" resizable="true" style="height: 800px;overflow: hidden">
 
-            <h:form id="form">
+            <h:form id="diagram">
                 <p:growl id="msgs" showDetail="true" />
 
                 <p:diagram value="#{taskGraphController.model}" style="height:600px" styleClass="ui-widget-content" var="el">

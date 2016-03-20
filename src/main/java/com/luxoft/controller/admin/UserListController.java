@@ -43,7 +43,8 @@ public class UserListController {
 
     @PostConstruct
     public void init(){
-        customers = clientService.getAll();
+
+//        customers = clientService.getAll();
     }
 
     public void onRowEdit(RowEditEvent event) {

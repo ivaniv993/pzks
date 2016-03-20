@@ -1,6 +1,10 @@
 package com.luxoft.controller.mpp;
 
+import org.hibernate.annotations.SourceType;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.DragDropEvent;
+import org.primefaces.event.MoveEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -76,6 +80,22 @@ public class TaskGraphController {
         model.addElement(computerC);
         model.addElement(serverA);
         model.addElement(serverB);
+    }
+
+    public void onNewDiagram(){
+        model = new DefaultDiagramModel();
+        model.setMaxConnections(-1);
+    }
+
+    public void addNewVertex(){
+        System.out.println(model.getElements().get(0).getX());
+        NetworkElement networkElement = new NetworkElement("Computer A", "computer-icon.png");
+        Element vertex = new Element( networkElement, "10em", "6em");
+        EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+        endPointCA.setSource(true);
+        vertex.addEndPoint(endPointCA);
+        model.addElement(vertex);
+
     }
 
     public DiagramModel getModel() {

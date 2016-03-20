@@ -94,24 +94,24 @@ public strictfp class EditController implements Serializable {
         productTypeNames = new ArrayList<String>();
         productSubTypeNames = new ArrayList<String>();
         productCategoriesNames = new ArrayList<String>();
-        productTypes = productTypeService.getAll();
-        products = productService.getAll();
-
-        assembledType = new HashMap<String, Map<String, List<String>>>();
-        for ( ProductType productType : productTypes ){
-            Map<String, List<String>> pc = new HashMap<String, List<String>>();
-            for ( ProductSubType productSubType : productType.getProductSubTypes()){
-                List<String> categoriesName = new ArrayList<String>();
-                List<ProductCategory> productCategories =  productSubType.getProductCategorys();
-                for (ProductCategory productCategory : productCategories){
-                    categoriesName.add(productCategory.getName());
-                }
-                pc.put(productSubType.getName(), categoriesName);
-            }
-            assembledType.put(productType.getName(), pc);
-        }
-        features =new ArrayList<Features>();
-        productTypeNames.addAll(assembledType.keySet());
+//        productTypes = productTypeService.getAll();
+//        products = productService.getAll();
+//
+//        assembledType = new HashMap<String, Map<String, List<String>>>();
+//        for ( ProductType productType : productTypes ){
+//            Map<String, List<String>> pc = new HashMap<String, List<String>>();
+//            for ( ProductSubType productSubType : productType.getProductSubTypes()){
+//                List<String> categoriesName = new ArrayList<String>();
+//                List<ProductCategory> productCategories =  productSubType.getProductCategorys();
+//                for (ProductCategory productCategory : productCategories){
+//                    categoriesName.add(productCategory.getName());
+//                }
+//                pc.put(productSubType.getName(), categoriesName);
+//            }
+//            assembledType.put(productType.getName(), pc);
+//        }
+//        features =new ArrayList<Features>();
+//        productTypeNames.addAll(assembledType.keySet());
         product = new Product();
         productStatuses = ProductStatus.values();
     }
