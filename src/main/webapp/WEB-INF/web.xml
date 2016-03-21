@@ -10,7 +10,7 @@
 
     <!-- Welcome page -->
     <welcome-file-list>
-        <welcome-file>pages/admin/product.jsf</welcome-file>
+        <welcome-file>pages/mpp/task_graph.xhtml</welcome-file>
     </welcome-file-list>
 
 

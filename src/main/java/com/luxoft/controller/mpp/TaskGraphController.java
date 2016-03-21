@@ -24,14 +24,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by iivaniv on 18.03.2016.
  */
 @ManagedBean(name="taskGraphController")
 @ViewScoped
-public class TaskGraphController {
-
+public class TaskGraphController extends AbstractGraphController {
 
     private DefaultDiagramModel model;
 
@@ -48,28 +48,28 @@ public class TaskGraphController {
         connector.setHoverPaintStyle("{strokeStyle:'#5C738B'}");
         model.setDefaultConnector(connector);
 
-        Element computerA = new Element(new NetworkElement("Computer A", "computer-icon.png"), "10em", "6em");
+        Element computerA = new Element(new NetworkElement("Computer A"), "10em", "6em");
         EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
         endPointCA.setSource(true);
         computerA.addEndPoint(endPointCA);
 
-        Element computerB = new Element(new NetworkElement("Computer B", "computer-icon.png"), "25em", "6em");
+        Element computerB = new Element(new NetworkElement("Computer B"), "25em", "6em");
         EndPoint endPointCB = createRectangleEndPoint(EndPointAnchor.BOTTOM);
         endPointCB.setSource(true);
         computerB.addEndPoint(endPointCB);
 
-        Element computerC = new Element(new NetworkElement("Computer C", "computer-icon.png"), "40em", "6em");
+        Element computerC = new Element(new NetworkElement("Computer C"), "40em", "6em");
         EndPoint endPointCC = createRectangleEndPoint(EndPointAnchor.BOTTOM);
         endPointCC.setSource(true);
         computerC.addEndPoint(endPointCC);
 
-        Element serverA = new Element(new NetworkElement("Server A", "server-icon.png"), "15em", "24em");
+        Element serverA = new Element(new NetworkElement("Server A"), "15em", "24em");
         EndPoint endPointSA = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
         serverA.setDraggable(true);
         endPointSA.setTarget(true);
         serverA.addEndPoint(endPointSA);
 
-        Element serverB = new Element(new NetworkElement("Server B", "server-icon.png"), "35em", "24em");
+        Element serverB = new Element(new NetworkElement("Server B"), "35em", "24em");
         EndPoint endPointSB = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
         serverB.setDraggable(true);
         endPointSB.setTarget(true);
@@ -87,16 +87,42 @@ public class TaskGraphController {
         model.setMaxConnections(-1);
     }
 
-    public void addNewVertex(){
-        System.out.println(model.getElements().get(0).getX());
-        NetworkElement networkElement = new NetworkElement("Computer A", "computer-icon.png");
-        Element vertex = new Element( networkElement, "10em", "6em");
-        EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCA.setSource(true);
-        vertex.addEndPoint(endPointCA);
-        model.addElement(vertex);
-
+    public void addPlusTask(){
+        NetworkElement networkElement = new NetworkElement("+");
+        addNewVertex(networkElement);
     }
+
+    public void addMinusTask(){
+        NetworkElement networkElement = new NetworkElement("-");
+        addNewVertex(networkElement);
+    }
+
+    public void addDivideTask(){
+        NetworkElement networkElement = new NetworkElement("/");
+        addNewVertex(networkElement);
+    }
+
+    public void addMultiplyTask(){
+        NetworkElement networkElement = new NetworkElement("*");
+        addNewVertex(networkElement);
+    }
+
+    private void updateDiagram(){
+        List<Element> elements = model.getElements();
+        int x=10, y=4;
+        for(int i = 0; i < elements.size(); i++ ){
+            if ( i!=0 && i % 6 ==0){
+                x = 10;
+                y += 15;
+            }
+            System.out.println("[X = "+x);
+            System.out.println("Y = "+y+"]");
+            elements.get(i).setX(x + "em");
+            elements.get(i).setY(y + "em");
+            x += 15;
+        }
+    }
+
 
     public DiagramModel getModel() {
         return model;
@@ -171,6 +197,10 @@ public class TaskGraphController {
             this.image = image;
         }
 
+        public NetworkElement(String name) {
+            this.name = name;
+        }
+
         public String getName() {
             return name;
         }
@@ -192,6 +222,16 @@ public class TaskGraphController {
             return name;
         }
 
+    }
+
+    private void addNewVertex(NetworkElement networkElement){
+        Element vertex = new Element( networkElement, "10em", "6em");
+        EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+        endPointCA.setSource(true);
+        vertex.addEndPoint(endPointCA);
+        model.addElement(vertex);
+
+        updateDiagram();
     }
 
 }

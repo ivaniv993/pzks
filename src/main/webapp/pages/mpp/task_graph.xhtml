@@ -24,26 +24,70 @@
         <ui:include src="../mppmenu.xhtml"/>
     </f:view>
 
+    <h:form id="add-taskVertex">
+        <p:dialog header="Add task" id="add_task" widgetVar="dlg2" modal="true" dynamic="true"
+                  style="width: 200px" width="445">
+            <h:panelGrid columns="2" cellpadding="5">
+
+                <p:outputLabel for="description" value="Task description:"/>
+                <p:inputText id="description" value="#{editController.product.description}" style="width: 100%"
+                             placeholder="Description" label="description">
+                </p:inputText>
+
+                <h:outputLabel for="time" value="Time:"/>
+                <p:inputText id="time" value="#{editController.product.price}" placeholder="Time" style="width: 100%"
+                             required="true" requiredMessage="Product is required">
+                    <f:validateDoubleRange minimum="1" maximum="100000"/>
+                </p:inputText>
+
+            </h:panelGrid>
+
+            <p:button value="Close" id="close" icon="ui-icon-minus" onclick="PF('dlg2').hide();return false;" style="left: 5%;right: 50%"/>
+            <p:commandButton value="Save" id="save" icon="ui-icon-disk" actionListener="#{editController.onSaveProduct}"
+                             onComplete="PF('dlg2').show()" style="right: 15%;left: 40%"
+                             update="add_task"/>
+
+        </p:dialog>
+    </h:form>
     <p:layout style="min-width:400px;min-height:200px;" id="main-layout">
+
         <p:layoutUnit position="north" size="150" resizable="true" closable="true" collapsible="true">
+
+
             <h:form id="control_form">
+
                 <h:panelGroup>
-                    <p:commandButton value="New graph" icon="ui-icon-plus"
+                    <p:commandButton value="New graph" icon="ui-icon-disk"
                                      actionListener="#{taskGraphController.onNewDiagram}"
                                      update="diagram, element_panel"/>
 
-                    <p:commandButton value="Open"  icon="ui-icon-plus" />
+                    <p:commandButton value="Open" icon="ui-icon-arrowrefresh-1-w"  />
 
-                    <p:commandButton value="Save" icon="ui-icon-plus"/>
+                    <p:commandButton value="Save" />
                 </h:panelGroup>
             </h:form>
 
-            <h:panelGroup id="element_panel">
-                <p:commandButton id="add_vertex" value="New vertex" icon="ui-icon-plus"
-                                 actionListener="#{taskGraphController.addNewVertex}"
-                                  update="diagram"/>
-
+            <h:panelGroup id="element_panel" >
+                <div style="border:solid; margin: 10px; width: 20%">
+                    <p:commandButton id="add_vertex"  icon="ui-icon-plus" style="margin: 10px"
+                                     actionListener="#{taskGraphController.addPlusTask}"
+                                     update="diagram" onclick="PF('dlg2').show();"/>
+                    <p:commandButton id="minus_vertex" icon="ui-icon-minus" style="margin: 10px"
+                                     actionListener="#{taskGraphController.addMinusTask}"
+                                     update="diagram" onclick="PF('dlg2').show();"/>
+                    <p:commandButton id="multi_vertex" value="*"  style="margin: 10px"
+                                     actionListener="#{taskGraphController.addMultiplyTask}"
+                                     update="diagram" onclick="PF('dlg2').show();"/>
+                    <p:commandButton id="divide_vertex" value="/"  style="margin: 10px"
+                                     actionListener="#{taskGraphController.addDivideTask}"
+                                     update="diagram" onclick="PF('dlg2').show();"/>
+                </div>
             </h:panelGroup>
+
+
+
+
+
         </p:layoutUnit>
 
         <p:layoutUnit position="center" resizable="true" style="height: 800px;overflow: hidden">
@@ -54,7 +98,6 @@
                 <p:diagram value="#{taskGraphController.model}" style="height:600px" styleClass="ui-widget-content" var="el">
                     <f:facet name="element">
                         <h:outputText value="#{el.name}" style="display:block;margin-top:1em;"/>
-                        <p:graphicImage name="demo/images/#{el.image}" />
                     </f:facet>
                     <p:ajax event="connect" listener="#{taskGraphController.onConnect}" />
                     <p:ajax event="disconnect" listener="#{taskGraphController.onDisconnect}" />
@@ -62,14 +105,13 @@
                 </p:diagram>
             </h:form>
 
-
-            /* Demo CSS */
             <style type="text/css">
                 .ui-diagram-element {
                     border:0.1em dotted #E5E4E2;
                     background-color: #EFEEEC;
-                    width:10em;
-                    height:8em;
+                    border-radius: 50%;
+                    width:6em;
+                    height:6em;
                     text-align: center;
                     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
                 }
