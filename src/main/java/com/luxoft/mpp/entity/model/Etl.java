@@ -1,6 +1,6 @@
-package com.luxoft.entity.model;
+package com.luxoft.mpp.entity.model;
 
-import com.luxoft.entity.model.enumeration.EtlStatus;
+import com.luxoft.mpp.entity.model.enumeration.EtlStatus;
 
 import javax.persistence.*;
 
@@ -20,6 +20,7 @@ public class Etl {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
+
     private EtlStatus etlStatus;
 
     @Column(name = "description")
@@ -39,5 +40,13 @@ public class Etl {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,4 +1,4 @@
-package com.luxoft.entity.model.enumeration;
+package com.luxoft.mpp.entity.model.enumeration;
 
 /**
  * Created by iivaniv on 21.03.2016.

@@ -1,10 +1,9 @@
-package com.luxoft.controller.mpp;
+package com.luxoft.mpp.controllers;
 
-import org.hibernate.annotations.SourceType;
+import com.luxoft.mpp.entity.model.Etl;
+import com.luxoft.mpp.service.TaskService;
+import com.luxoft.mpp.service.TaskVertexServiceImpl;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.DragDropEvent;
-import org.primefaces.event.MoveEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -17,12 +16,15 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedOperation;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,6 +34,9 @@ import java.util.List;
 @ManagedBean(name="taskGraphController")
 @ViewScoped
 public class TaskGraphController extends AbstractGraphController {
+
+    @ManagedProperty("#{taskVertexServiceImpl}")
+    private TaskVertexServiceImpl taskVertexServiceImpl;
 
     private DefaultDiagramModel model;
 
@@ -80,6 +85,14 @@ public class TaskGraphController extends AbstractGraphController {
         model.addElement(computerC);
         model.addElement(serverA);
         model.addElement(serverB);
+    }
+
+    public void saveGraph(){
+
+        Etl etl = new Etl();
+        List<Element> elements = model.getElements();
+        taskVertexServiceImpl.saveVertex(elements);
+
     }
 
     public void onNewDiagram(){
@@ -138,8 +151,12 @@ public class TaskGraphController extends AbstractGraphController {
             RequestContext.getCurrentInstance().update("form:msgs");
         }
         else {
+
+
             suspendEvent = false;
         }
+        System.out.println("Source = "+event.getSourceElement().getData());
+        System.out.println("Target = "+event.getTargetElement().getData());
     }
 
     public void onDisconnect(DisconnectEvent event) {
@@ -232,6 +249,15 @@ public class TaskGraphController extends AbstractGraphController {
         model.addElement(vertex);
 
         updateDiagram();
+    }
+
+
+    public TaskVertexServiceImpl getTaskVertexServiceImpl() {
+        return taskVertexServiceImpl;
+    }
+
+    public void setTaskVertexServiceImpl(TaskVertexServiceImpl taskVertexServiceImpl) {
+        this.taskVertexServiceImpl = taskVertexServiceImpl;
     }
 
 }

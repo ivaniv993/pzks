@@ -1,6 +1,6 @@
-package com.luxoft.entity.model;
+package com.luxoft.mpp.entity.model;
 
-import com.luxoft.entity.model.enumeration.TaskType;
+import com.luxoft.mpp.entity.model.enumeration.TaskType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  *
  */
 @Entity
-@Table(name="TASK_VERTEX", schema = "public")
+@Table(name="task_vertex1", schema = "public")
 public class TaskVertex {
 
     @Id
@@ -18,22 +18,29 @@ public class TaskVertex {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "upload_id")
+    @JoinColumn(name = "upload_id", referencedColumnName = "id")
+    @ManyToOne( optional = false )
     private Etl etl;
 
+    @JoinColumn(name = "task_vertex_id", referencedColumnName = "id")
     @ManyToOne
     private TaskVertex taskVertex;
 
     @OneToMany
     private List<TaskVertex> relatedTaskVertex;
 
-    @Column(name = "time")
+    @Column(name = "task_time")
     private int time;
 
-    @Column(name = "type")
+    @Column(name = "task_type")
     @Enumerated(EnumType.STRING)
-
     private TaskType taskType;
+
+    @Column(name = "task_x")
+    private int x;
+
+    @Column(name = "task_y")
+    private int y;
 
     public TaskVertex() { }
 
@@ -76,4 +83,21 @@ public class TaskVertex {
     public void setTime(int time) {
         this.time = time;
     }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
 }
