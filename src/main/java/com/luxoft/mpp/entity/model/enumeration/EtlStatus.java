@@ -10,8 +10,18 @@ public enum EtlStatus {
     FAIL("FAIL");
 
 
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     EtlStatus(String status) {
+        this.status = status;
 
     }
 }
