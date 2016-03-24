@@ -29,23 +29,18 @@
                   style="width: 200px" width="445">
             <h:panelGrid columns="2" cellpadding="5">
 
-                <p:outputLabel for="description" value="Task description:"/>
-                <p:inputText id="description" value="#{editController.product.description}" style="width: 100%"
-                             placeholder="Description" label="description">
-                </p:inputText>
-
                 <h:outputLabel for="time" value="Time:"/>
-                <p:inputText id="time" value="#{editController.product.price}" placeholder="Time" style="width: 100%"
+                <p:inputText id="time" value="#{taskGraphController.taskVertex.time}" placeholder="Time" style="width: 100%"
                              required="true" requiredMessage="Product is required">
-                    <f:validateDoubleRange minimum="1" maximum="100000"/>
+                    <f:validateDoubleRange minimum="0" maximum="100000"/>
                 </p:inputText>
 
             </h:panelGrid>
 
             <p:button value="Close" id="close" icon="ui-icon-minus" onclick="PF('dlg2').hide();return false;" style="left: 5%;right: 50%"/>
-            <p:commandButton value="Save" id="save" icon="ui-icon-disk" actionListener="#{editController.onSaveProduct}"
+            <p:commandButton value="Save" id="save" icon="ui-icon-disk" actionListener="#{taskGraphController.saveGraph}"
                              onComplete="PF('dlg2').show()" style="right: 15%;left: 40%"
-                             update="add_task"/>
+                             update="add_task, diagram"/>
 
         </p:dialog>
     </h:form>
@@ -71,21 +66,18 @@
                 <div style="border:solid; margin: 10px; width: 20%">
                     <p:commandButton id="add_vertex"  icon="ui-icon-plus" style="margin: 10px"
                                      actionListener="#{taskGraphController.addPlusTask}"
-                                     update="diagram" onclick="PF('dlg2').show();"/>
+                                     update="diagram" oncomplete="PF('dlg2').show();"/>
                     <p:commandButton id="minus_vertex" icon="ui-icon-minus" style="margin: 10px"
                                      actionListener="#{taskGraphController.addMinusTask}"
-                                     update="diagram" onclick="PF('dlg2').show();"/>
+                                     update="diagram" onsuccess="PF('dlg2').show();"/>
                     <p:commandButton id="multi_vertex" value="*"  style="margin: 10px"
                                      actionListener="#{taskGraphController.addMultiplyTask}"
-                                     update="diagram" onclick="PF('dlg2').show();"/>
+                                     update="diagram" onsuccess="PF('dlg2').show();"/>
                     <p:commandButton id="divide_vertex" value="/"  style="margin: 10px"
                                      actionListener="#{taskGraphController.addDivideTask}"
-                                     update="diagram" onclick="PF('dlg2').show();"/>
+                                     update="diagram" onsuccess="PF('dlg2').show();"/>
                 </div>
             </h:panelGroup>
-
-
-
 
 
         </p:layoutUnit>
@@ -97,7 +89,8 @@
 
                 <p:diagram value="#{taskGraphController.model}" style="height:600px" styleClass="ui-widget-content" var="el">
                     <f:facet name="element">
-                        <h:outputText value="#{el.name}" style="display:block;margin-top:1em;"/>
+                        <h:outputText value="#{el.taskType}" style="display:block;margin-top:1em;"/>
+                        <h:outputText value="#{el.time}" style="display:block;margin-top:1em;"/>
                     </f:facet>
                     <p:ajax event="connect" listener="#{taskGraphController.onConnect}" />
                     <p:ajax event="disconnect" listener="#{taskGraphController.onDisconnect}" />

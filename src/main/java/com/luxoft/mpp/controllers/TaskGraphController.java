@@ -1,6 +1,8 @@
 package com.luxoft.mpp.controllers;
 
 import com.luxoft.mpp.entity.model.Etl;
+import com.luxoft.mpp.entity.model.TaskVertex;
+import com.luxoft.mpp.entity.model.enumeration.TaskType;
 import com.luxoft.mpp.service.TaskService;
 import com.luxoft.mpp.service.TaskVertexServiceImpl;
 import org.primefaces.context.RequestContext;
@@ -42,6 +44,8 @@ public class TaskGraphController extends AbstractGraphController {
 
     private boolean suspendEvent;
 
+    private TaskVertex taskVertex;
+
     @PostConstruct
     public void init() {
         model = new DefaultDiagramModel();
@@ -52,79 +56,51 @@ public class TaskGraphController extends AbstractGraphController {
         connector.setPaintStyle("{strokeStyle:'#98AFC7', lineWidth:3}");
         connector.setHoverPaintStyle("{strokeStyle:'#5C738B'}");
         model.setDefaultConnector(connector);
+        taskVertex = new TaskVertex();
 
-        Element computerA = new Element(new NetworkElement("Computer A"), "10em", "6em");
-        EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCA.setSource(true);
-        computerA.addEndPoint(endPointCA);
-
-        Element computerB = new Element(new NetworkElement("Computer B"), "25em", "6em");
-        EndPoint endPointCB = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCB.setSource(true);
-        computerB.addEndPoint(endPointCB);
-
-        Element computerC = new Element(new NetworkElement("Computer C"), "40em", "6em");
-        EndPoint endPointCC = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCC.setSource(true);
-        computerC.addEndPoint(endPointCC);
-
-        Element serverA = new Element(new NetworkElement("Server A"), "15em", "24em");
-        EndPoint endPointSA = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
-        serverA.setDraggable(true);
-        endPointSA.setTarget(true);
-        serverA.addEndPoint(endPointSA);
-
-        Element serverB = new Element(new NetworkElement("Server B"), "35em", "24em");
-        EndPoint endPointSB = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
-        serverB.setDraggable(true);
-        endPointSB.setTarget(true);
-        serverB.addEndPoint(endPointSB);
-
-        model.addElement(computerA);
-        model.addElement(computerB);
-        model.addElement(computerC);
-        model.addElement(serverA);
-        model.addElement(serverB);
     }
 
     public void saveGraph(){
 
-        Etl etl = new Etl();
-        List<Element> elements = model.getElements();
-        taskVertexServiceImpl.saveVertex(elements);
+        System.out.println();
 
     }
 
     public void onNewDiagram(){
-        model = new DefaultDiagramModel();
-        model.setMaxConnections(-1);
+        init();
     }
 
     public void addPlusTask(){
-        NetworkElement networkElement = new NetworkElement("+");
-        addNewVertex(networkElement);
+        taskVertex.setTaskType(TaskType.PLUS);
+        addNewVertex(taskVertex);
     }
 
     public void addMinusTask(){
-        NetworkElement networkElement = new NetworkElement("-");
-        addNewVertex(networkElement);
+        taskVertex.setTaskType(TaskType.PLUS);
+        addNewVertex(taskVertex);
     }
 
     public void addDivideTask(){
-        NetworkElement networkElement = new NetworkElement("/");
-        addNewVertex(networkElement);
+        taskVertex.setTaskType(TaskType.PLUS);
+        addNewVertex(taskVertex);
     }
 
     public void addMultiplyTask(){
-        NetworkElement networkElement = new NetworkElement("*");
-        addNewVertex(networkElement);
+        taskVertex.setTaskType(TaskType.PLUS);
+        addNewVertex(taskVertex);
     }
 
     private void updateDiagram(){
         List<Element> elements = model.getElements();
         int x=10, y=4;
         for(int i = 0; i < elements.size(); i++ ){
-            if ( i!=0 && i % 6 ==0){
+
+            x += 15;
+
+            if( i == 0 )
+                continue;
+
+            if ( i % 5 ==0){
                 x = 10;
                 y += 15;
             }
@@ -132,7 +108,7 @@ public class TaskGraphController extends AbstractGraphController {
             System.out.println("Y = "+y+"]");
             elements.get(i).setX(x + "em");
             elements.get(i).setY(y + "em");
-            x += 15;
+
         }
     }
 
@@ -201,51 +177,14 @@ public class TaskGraphController extends AbstractGraphController {
         return endPoint;
     }
 
-    public class NetworkElement implements Serializable {
-
-        private String name;
-        private String image;
-
-        public NetworkElement() {
-        }
-
-        public NetworkElement(String name, String image) {
-            this.name = name;
-            this.image = image;
-        }
-
-        public NetworkElement(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-    }
-
-    private void addNewVertex(NetworkElement networkElement){
+    private void addNewVertex(TaskVertex networkElement){
         Element vertex = new Element( networkElement, "10em", "6em");
-        EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointCA.setSource(true);
-        vertex.addEndPoint(endPointCA);
+        EndPoint endPointTop = createDotEndPoint(EndPointAnchor.TOP);
+        EndPoint endPointBot = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+        endPointBot.setSource(true);
+        endPointTop.setSource(true);
+        vertex.addEndPoint(endPointBot);
+        vertex.addEndPoint(endPointTop);
         model.addElement(vertex);
 
         updateDiagram();
@@ -260,6 +199,13 @@ public class TaskGraphController extends AbstractGraphController {
         this.taskVertexServiceImpl = taskVertexServiceImpl;
     }
 
+    public TaskVertex getTaskVertex() {
+        return taskVertex;
+    }
+
+    public void setTaskVertex(TaskVertex taskVertex) {
+        this.taskVertex = taskVertex;
+    }
 }
 
 
