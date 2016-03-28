@@ -94,7 +94,7 @@
             <version>4.1.6.RELEASE</version>
         </dependency>
 
-        <!-- Security  -->
+        <!-- Start Security  -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -110,7 +110,7 @@
             <artifactId>spring-security-config</artifactId>
             <version>4.0.4.RELEASE</version>
         </dependency>
-
+        <!-- End Security  -->
 
         <dependency>
             <groupId>org.springframework.data</groupId>
