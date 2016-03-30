@@ -24,30 +24,33 @@
         <ui:include src="../mppmenu.xhtml"/>
     </f:view>
 
-    <h:form id="add-taskVertex">
+    <!--<h:form id="add-taskVertex">-->
         <p:dialog header="Add task" id="add_task" widgetVar="dlg2" modal="true" dynamic="true"
                   style="width: 200px" width="445">
             <h:panelGrid columns="2" cellpadding="5">
 
+                <h:outputLabel for="description" value="Description:"/>
+                <p:inputText id="description" value="#{taskGraphController.taskVertex.description}" placeholder="Description" style="width: 100%"
+                             required="true" />
+
                 <h:outputLabel for="time" value="Time:"/>
                 <p:inputText id="time" value="#{taskGraphController.taskVertex.time}" placeholder="Time" style="width: 100%"
-                             required="true" requiredMessage="Product is required">
+                             required="true" requiredMessage="Time is required">
                     <f:validateDoubleRange minimum="0" maximum="100000"/>
                 </p:inputText>
 
             </h:panelGrid>
 
             <p:button value="Close" id="close" icon="ui-icon-minus" onclick="PF('dlg2').hide();return false;" style="left: 5%;right: 50%"/>
-            <p:commandButton value="Save" id="save" icon="ui-icon-disk" actionListener="#{taskGraphController.saveGraph}"
+            <p:commandButton value="Save" id="save" icon="ui-icon-disk" actionListener="#{taskGraphController.addTask}"
                              onComplete="PF('dlg2').show()" style="right: 15%;left: 40%"
                              update="add_task, diagram"/>
 
         </p:dialog>
-    </h:form>
+    <!--</h:form>-->
     <p:layout style="min-width:400px;min-height:200px;" id="main-layout">
 
         <p:layoutUnit position="north" size="150" resizable="true" closable="true" collapsible="true">
-
 
             <h:form id="control_form">
 
@@ -65,17 +68,7 @@
             <h:panelGroup id="element_panel" >
                 <div style="border:solid; margin: 10px; width: 20%">
                     <p:commandButton id="add_vertex"  icon="ui-icon-plus" style="margin: 10px"
-                                     actionListener="#{taskGraphController.addPlusTask}"
-                                     update="diagram" oncomplete="PF('dlg2').show();"/>
-                    <p:commandButton id="minus_vertex" icon="ui-icon-minus" style="margin: 10px"
-                                     actionListener="#{taskGraphController.addMinusTask}"
-                                     update="diagram" onsuccess="PF('dlg2').show();"/>
-                    <p:commandButton id="multi_vertex" value="*"  style="margin: 10px"
-                                     actionListener="#{taskGraphController.addMultiplyTask}"
-                                     update="diagram" onsuccess="PF('dlg2').show();"/>
-                    <p:commandButton id="divide_vertex" value="/"  style="margin: 10px"
-                                     actionListener="#{taskGraphController.addDivideTask}"
-                                     update="diagram" onsuccess="PF('dlg2').show();"/>
+                                     oncomplete="PF('dlg2').show();"/>
                 </div>
             </h:panelGroup>
 

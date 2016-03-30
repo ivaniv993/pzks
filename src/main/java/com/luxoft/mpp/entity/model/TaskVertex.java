@@ -1,5 +1,6 @@
 package com.luxoft.mpp.entity.model;
 
+import com.luxoft.mpp.entity.model.enumeration.TaskStatus;
 import com.luxoft.mpp.entity.model.enumeration.TaskType;
 
 import javax.persistence.*;
@@ -9,43 +10,52 @@ import java.util.List;
  * Created by iivaniv on 18.03.2016.
  *
  */
-@Entity
-@Table(name="task_vertex1", schema = "public")
+//@Entity
+//@Table(name="task_vertex1", schema = "public")
 public class TaskVertex {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "upload_id", referencedColumnName = "id")
-    @ManyToOne( optional = false )
+//    @JoinColumn(name = "upload_id", referencedColumnName = "id")
+//    @ManyToOne( optional = false )
     private Etl etl;
 
-    @JoinColumn(name = "task_vertex_id", referencedColumnName = "id")
-    @ManyToOne
+//    @JoinColumn(name = "task_vertex_id", referencedColumnName = "id")
+//    @ManyToOne
     private TaskVertex taskVertex;
 
-    @Column(name = "status")
-    private String status;
+//    @Column(name = "status")
+    private TaskStatus taskStatus;
 
-    @OneToMany
+    private String description;
+
+//    @OneToMany
     private List<TaskVertex> relatedTaskVertex;
 
-    @Column(name = "task_time")
+//    @Column(name = "task_time")
     private int time;
 
-    @Column(name = "task_type")
-    @Enumerated(EnumType.STRING)
+//    @Column(name = "task_type")
+//    @Enumerated(EnumType.STRING)
     private TaskType taskType;
 
-    @Column(name = "task_x")
+//    @Column(name = "task_x")
     private int x;
 
-    @Column(name = "task_y")
+//    @Column(name = "task_y")
     private int y;
 
     public TaskVertex() { }
+
+    public TaskVertex(TaskVertex taskVertex) {
+        this.description = taskVertex.description;
+        this.time = taskVertex.time;
+        this.x = taskVertex.x;
+        this.y = taskVertex.y;
+    }
 
     public Etl getEtl() {
         return etl;
@@ -111,11 +121,19 @@ public class TaskVertex {
         this.id = id;
     }
 
-    public String getStatus() {
-        return status;
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

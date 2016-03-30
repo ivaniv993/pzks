@@ -40,7 +40,7 @@ public class TaskGraphController extends AbstractGraphController {
     @ManagedProperty("#{taskVertexServiceImpl}")
     private TaskVertexServiceImpl taskVertexServiceImpl;
 
-    private DefaultDiagramModel model;
+    private DefaultDiagramModel model = new DefaultDiagramModel();
 
     private boolean suspendEvent;
 
@@ -48,7 +48,7 @@ public class TaskGraphController extends AbstractGraphController {
 
     @PostConstruct
     public void init() {
-        model = new DefaultDiagramModel();
+
         model.setMaxConnections(-1);
 
         model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
@@ -70,19 +70,8 @@ public class TaskGraphController extends AbstractGraphController {
         init();
     }
 
-    public void addPlusTask(){
-        taskVertex.setTaskType(TaskType.PLUS);
-        addNewVertex(taskVertex);
-    }
-
-    public void addMinusTask(){
-        taskVertex.setTaskType(TaskType.PLUS);
-        addNewVertex(taskVertex);
-    }
-
-    public void addDivideTask(){
-        taskVertex.setTaskType(TaskType.PLUS);
-        addNewVertex(taskVertex);
+    public void addTask(){
+        addNewVertex(new TaskVertex(taskVertex));
     }
 
     public void addMultiplyTask(){
