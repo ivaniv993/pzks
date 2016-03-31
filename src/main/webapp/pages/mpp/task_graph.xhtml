@@ -67,7 +67,7 @@
 
             <h:panelGroup id="element_panel" >
                 <div style="border:solid; margin: 10px; width: 20%">
-                    <p:commandButton id="add_vertex"  icon="ui-icon-plus" style="margin: 10px"
+                    <p:commandButton id="add_vertex"  icon="ui-icon-plus" style="margin: 10px" value="Task"
                                      oncomplete="PF('dlg2').show();"/>
                 </div>
             </h:panelGroup>
@@ -82,8 +82,7 @@
 
                 <p:diagram value="#{taskGraphController.model}" style="height:600px" styleClass="ui-widget-content" var="el">
                     <f:facet name="element">
-                        <h:outputText value="#{el.taskType}" style="display:block;margin-top:1em;"/>
-                        <h:outputText value="#{el.time}" style="display:block;margin-top:1em;"/>
+                        <h:outputText value="#{el.name}" style="display:block;margin-top:1em;"/>
                     </f:facet>
                     <p:ajax event="connect" listener="#{taskGraphController.onConnect}" />
                     <p:ajax event="disconnect" listener="#{taskGraphController.onDisconnect}" />

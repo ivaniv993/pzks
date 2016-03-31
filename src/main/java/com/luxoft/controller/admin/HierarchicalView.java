@@ -26,52 +26,44 @@ public class HierarchicalView {
         model = new DefaultDiagramModel();
         model.setMaxConnections(-1);
 
-        Element ceo = new Element("CEO", "25em", "6em");
-        ceo.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
-        model.addElement(ceo);
+        Element vertex0 = new Element("Vertex 0", "25em", "4em");
+        vertex0.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+        vertex0.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
+        model.addElement(vertex0);
 
         //CFO
-        Element cfo = new Element("CFO", "10em", "18em");
-        cfo.addEndPoint(createEndPoint(EndPointAnchor.TOP));
-        cfo.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
+        Element vertex1 = new Element("Vertex 1", "10em", "10em");
+        vertex1.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+        vertex1.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
 
-        Element fin = new Element("FIN", "5em", "30em");
-        fin.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+        Element vertex2 = new Element("Vertex 2", "5em", "16em");
+        vertex2.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+        vertex2.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
 
-        Element pur = new Element("PUR", "20em", "30em");
-        pur.addEndPoint(createEndPoint(EndPointAnchor.TOP));
-
-        model.addElement(cfo);
-        model.addElement(fin);
-        model.addElement(pur);
+        Element vertex3 = new Element("Vertex 3", "20em", "16em");
+        vertex3.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+        vertex3.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
 
         //CTO
-        Element cto = new Element("CTO", "40em", "18em");
-        cto.addEndPoint(createEndPoint(EndPointAnchor.TOP));
-        cto.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
+        Element vertex4 = new Element("Vertex 4", "40em", "20em");
+        vertex4.addEndPoint(createEndPoint(EndPointAnchor.TOP));
+        vertex4.addEndPoint(createEndPoint(EndPointAnchor.BOTTOM));
 
-        Element dev = new Element("DEV", "35em", "30em");
-        dev.addEndPoint(createEndPoint(EndPointAnchor.TOP));
-
-        Element tst = new Element("TST", "50em", "30em");
-        tst.addEndPoint(createEndPoint(EndPointAnchor.TOP));
-
-        model.addElement(cto);
-        model.addElement(dev);
-        model.addElement(tst);
+        model.addElement(vertex1);
+        model.addElement(vertex2);
+        model.addElement(vertex3);
+        model.addElement(vertex4);
 
         StraightConnector connector = new StraightConnector();
         connector.setPaintStyle("{strokeStyle:'#aa4a4e', lineWidth:3}");
         connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
 
         //connections
-        model.connect(new Connection(ceo.getEndPoints().get(0), cfo.getEndPoints().get(0), connector));
-        model.connect(new Connection(ceo.getEndPoints().get(0), cto.getEndPoints().get(0), connector));
-        model.connect(new Connection(ceo.getEndPoints().get(0), dev.getEndPoints().get(0), connector));
-        model.connect(new Connection(cfo.getEndPoints().get(1), fin.getEndPoints().get(0), connector));
-        model.connect(new Connection(cfo.getEndPoints().get(1), pur.getEndPoints().get(0), connector));
-        model.connect(new Connection(cto.getEndPoints().get(1), dev.getEndPoints().get(0), connector));
-        model.connect(new Connection(cto.getEndPoints().get(1), tst.getEndPoints().get(0), connector));
+        model.connect(new Connection(vertex0.getEndPoints().get(1), vertex1.getEndPoints().get(0), connector));
+        model.connect(new Connection(vertex0.getEndPoints().get(1), vertex4.getEndPoints().get(0), connector));
+        model.connect(new Connection(vertex1.getEndPoints().get(1), vertex2.getEndPoints().get(0), connector));
+        model.connect(new Connection(vertex4.getEndPoints().get(1), vertex3.getEndPoints().get(0), connector));
+        model.connect(new Connection(vertex2.getEndPoints().get(1), vertex4.getEndPoints().get(0), connector));
     }
 
     private EndPoint createEndPoint(EndPointAnchor anchor) {

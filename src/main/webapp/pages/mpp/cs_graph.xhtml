@@ -29,48 +29,28 @@
                   style="width: 200px" width="445">
             <h:panelGrid columns="2" cellpadding="5">
                 <h:outputLabel for="name" value="Enter Name:"/>
-                <p:inputText id="name" value="#{editController.product.name}" placeholder="Product Name"
+                <p:inputText id="name" value="#{editController.product.name}" placeholder="Vertex name"
                              required="true" label="name" requiredMessage="Product name is required"
                              style="width: 100%">
                     <f:validateRegex pattern="((?=.*[A-Z])(?=.*[a-z]).{3,})"/>
                 </p:inputText>
 
-                <p:outputLabel for="description" value="Prod Description:"/>
+                <p:outputLabel for="description" value="Vertex description:"/>
                 <p:inputText id="description" value="#{editController.product.description}" style="width: 100%"
                              placeholder="Description" label="description">
                 </p:inputText>
 
-                <h:outputLabel for="stock-address1" value="Stock addr.:"/>
-                <p:inputText id="stock-address1" value="#{editController.product.stockLocation}" placeholder="Stock adr"
-                             required="true" label="address" requiredMessage="Stock address is required"
-                             style="width: 100%">
-                    <f:validateRegex pattern="((?=.*[a-z]).{3,})"/>
-                </p:inputText>
-
-                <h:outputLabel for="price" value="Price:"/>
-                <p:inputText id="price" value="#{editController.product.price}" placeholder="Price" style="width: 100%"
-                             required="true" requiredMessage="Product is required">
+                <h:outputLabel for="price" value="Topology:"/>
+                <p:inputText id="price" value="#{editController.product.price}" placeholder="Topology" style="width: 100%"
+                             required="true" requiredMessage="Topology is required">
                     <f:validateDoubleRange minimum="0.1" maximum="100000"/>
                 </p:inputText>
 
-                <p:outputLabel for="prodType" value="Prod. Type: "/>
+                <p:outputLabel for="prodType" value="Processor. Type: "/>
                 <p:selectOneMenu id="prodType" value="#{editController.prodType}" style="width: 100%">
                     <p:ajax listener="#{editController.onProductTypeChange}" update="prodSubType prodCategory"/>
                     <f:selectItem itemLabel="Select Prod. Type" itemValue="" noSelectionOption="true"/>
                     <f:selectItems value="#{editController.productTypeNames}"/>
-                </p:selectOneMenu>
-
-                <p:outputLabel for="prodSubType" value="Prod. Sub. Type: "/>
-                <p:selectOneMenu id="prodSubType" value="#{editController.prodSubType}" style="width: 100%">
-                    <p:ajax listener="#{editController.onProductTypeChange}" update="prodCategory"/>
-                    <f:selectItem itemLabel="Prod. Sub. Type" itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{editController.productSubTypeNames}"/>
-                </p:selectOneMenu>
-
-                <p:outputLabel for="prodCategory" value="Prod. Category: "/>
-                <p:selectOneMenu id="prodCategory" value="#{editController.prodCategory}" style="width: 100%">
-                    <f:selectItem itemLabel="Prod. Category" itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{editController.productCategoriesNames}"/>
                 </p:selectOneMenu>
 
                 <p:commandButton value="feature" id="new1" icon="ui-icon-plus"
@@ -99,34 +79,25 @@
 
     <p:layout style="min-width:400px;min-height:200px;" id="main-layout">
         <p:layoutUnit position="north" size="150" resizable="true" closable="true" collapsible="true">
-            <h:form>
+
+
+            <h:form id="control_form">
+
                 <h:panelGroup>
-                    <p:commandButton value="Add product" type="button" icon="ui-icon-plus"
-                                     onclick="PF('dlg2').show();"/>
+                    <p:commandButton value="New graph" icon="ui-icon-disk"
+                                     actionListener="#{taskGraphController.onNewDiagram}"
+                                     update="diagram"/>
+
+                    <p:commandButton value="Open" icon="ui-icon-arrowrefresh-1-w"  />
+
+                    <p:commandButton value="Save" actionListener="#{taskGraphController.saveGraph}"/>
                 </h:panelGroup>
             </h:form>
-            <h:form id="search">
+
+            <h:form>
                 <h:panelGroup>
-
-                    <p:autoComplete style="margin-right:10px" id="product-name" value="#{editController.name}"
-                                    completeMethod="#{editController.completeProductNames}" effect="fade"
-                                    placeholder="Name" styleClass="criterie-field-layout"/>
-                    <p:autoComplete style="margin-right:10px" value="#{editController.category}"
-                                    completeMethod="#{editController.completeProductCategories}" effect="fade"
-                                    placeholder="Category" styleClass="criterie-field-layout"/>
-                    <p:autoComplete style="margin-right:10px" value="#{editController.status}"
-                                    completeMethod="#{editController.completeProductStatuses}" effect="fade"
-                                    placeholder="Status" styleClass="criterie-field-layout"/>
-                    <p:autoComplete style="margin-right:10px" value="${editController.stockAddress}"
-                                    completeMethod="#{editController.completeProductStockAddress}" effect="fade"
-                                    placeholder="Stock address" styleClass="criterie-field-layout"/>
-                    <p:commandButton value="Search"  actionListener="${editController.searchByCriteria()}"
-                                     icon="ui-icon-search"
-                                     update=":prod-table" styleClass="criterie-field-layout"/>
-                    <p:inputText style="margin-left:10px" id="stock-address"
-                                 placeholder="Stock" value="#{editController.product.stockLocation}"
-                                 styleClass="criterie-field-layout autoCompl" />
-
+                    <p:commandButton value="Vertex" type="button" icon="ui-icon-plus"
+                                     onclick="PF('dlg2').show();"/>
                 </h:panelGroup>
             </h:form>
         </p:layoutUnit>
@@ -151,7 +122,7 @@
                 }
             </style>
 
-            <p:diagram value="#{diagramHierarchicalView.model}" style="height:600px" styleClass="ui-widget-content"/>
+            <p:diagram value="#{diagramHierarchicalView.model}" style="height:600px" styleClass="ui-widget-content" id="diagram"/>
             <h:form id="prod-table">
                 <p:growl id="msgs" showDetail="true"/>
                 <p:dataTable id="products1" var="product" value="#{editController.products}" editable="true"

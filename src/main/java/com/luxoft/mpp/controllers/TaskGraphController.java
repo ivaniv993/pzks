@@ -35,12 +35,12 @@ import java.util.List;
  */
 @ManagedBean(name="taskGraphController")
 @ViewScoped
-public class TaskGraphController extends AbstractGraphController {
+public class TaskGraphController implements Serializable {
 
-    @ManagedProperty("#{taskVertexServiceImpl}")
-    private TaskVertexServiceImpl taskVertexServiceImpl;
+//    @ManagedProperty("#{taskVertexServiceImpl}")
+//    private TaskVertexServiceImpl taskVertexServiceImpl;
 
-    private DefaultDiagramModel model = new DefaultDiagramModel();
+    private DefaultDiagramModel model;
 
     private boolean suspendEvent;
 
@@ -49,6 +49,16 @@ public class TaskGraphController extends AbstractGraphController {
     @PostConstruct
     public void init() {
 
+        /*model.setMaxConnections(-1);
+
+        model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
+        StraightConnector connector = new StraightConnector();
+        connector.setPaintStyle("{strokeStyle:'#98AFC7', lineWidth:3}");
+        connector.setHoverPaintStyle("{strokeStyle:'#5C738B'}");
+        model.setDefaultConnector(connector);
+        taskVertex = new TaskVertex();*/
+
+        model = new DefaultDiagramModel();
         model.setMaxConnections(-1);
 
         model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
@@ -56,7 +66,39 @@ public class TaskGraphController extends AbstractGraphController {
         connector.setPaintStyle("{strokeStyle:'#98AFC7', lineWidth:3}");
         connector.setHoverPaintStyle("{strokeStyle:'#5C738B'}");
         model.setDefaultConnector(connector);
-        taskVertex = new TaskVertex();
+
+        Element computerA = new Element(new NetworkElement("12", "computer-icon.png"), "10em", "6em");
+        EndPoint endPointCA = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+        endPointCA.setSource(true);
+        computerA.addEndPoint(endPointCA);
+
+        Element computerB = new Element(new NetworkElement("35", "computer-icon.png"), "25em", "6em");
+        EndPoint endPointCB = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+        endPointCB.setSource(true);
+        computerB.addEndPoint(endPointCB);
+
+        Element computerC = new Element(new NetworkElement("15", "computer-icon.png"), "40em", "6em");
+        EndPoint endPointCC = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+        endPointCC.setSource(true);
+        computerC.addEndPoint(endPointCC);
+
+        Element serverA = new Element(new NetworkElement("30", "server-icon.png"), "15em", "24em");
+        EndPoint endPointSA = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
+        serverA.setDraggable(false);
+        endPointSA.setTarget(true);
+        serverA.addEndPoint(endPointSA);
+
+        Element serverB = new Element(new NetworkElement("24", "server-icon.png"), "35em", "24em");
+        EndPoint endPointSB = createDotEndPoint(EndPointAnchor.AUTO_DEFAULT);
+        serverB.setDraggable(false);
+        endPointSB.setTarget(true);
+        serverB.addEndPoint(endPointSB);
+
+        model.addElement(computerA);
+        model.addElement(computerB);
+        model.addElement(computerC);
+        model.addElement(serverA);
+        model.addElement(serverB);
 
     }
 
@@ -95,6 +137,7 @@ public class TaskGraphController extends AbstractGraphController {
             }
             System.out.println("[X = "+x);
             System.out.println("Y = "+y+"]");
+
             elements.get(i).setX(x + "em");
             elements.get(i).setY(y + "em");
 
@@ -116,12 +159,8 @@ public class TaskGraphController extends AbstractGraphController {
             RequestContext.getCurrentInstance().update("form:msgs");
         }
         else {
-
-
             suspendEvent = false;
         }
-        System.out.println("Source = "+event.getSourceElement().getData());
-        System.out.println("Target = "+event.getTargetElement().getData());
     }
 
     public void onDisconnect(DisconnectEvent event) {
@@ -146,6 +185,19 @@ public class TaskGraphController extends AbstractGraphController {
         suspendEvent = true;
     }
 
+    private void addNewVertex(TaskVertex networkElement){
+        Element vertex = new Element( networkElement, "10em", "6em");
+        EndPoint endPointTop = createDotEndPoint(EndPointAnchor.TOP);
+        EndPoint endPointBot = createRectangleEndPoint(EndPointAnchor.BOTTOM);
+        endPointBot.setSource(true);
+        endPointTop.setSource(true);
+        vertex.addEndPoint(endPointBot);
+        vertex.addEndPoint(endPointTop);
+        model.addElement(vertex);
+
+        updateDiagram();
+    }
+
     private EndPoint createDotEndPoint(EndPointAnchor anchor) {
         DotEndPoint endPoint = new DotEndPoint(anchor);
         endPoint.setScope("network");
@@ -166,27 +218,14 @@ public class TaskGraphController extends AbstractGraphController {
         return endPoint;
     }
 
-    private void addNewVertex(TaskVertex networkElement){
-        Element vertex = new Element( networkElement, "10em", "6em");
-        EndPoint endPointTop = createDotEndPoint(EndPointAnchor.TOP);
-        EndPoint endPointBot = createRectangleEndPoint(EndPointAnchor.BOTTOM);
-        endPointBot.setSource(true);
-        endPointTop.setSource(true);
-        vertex.addEndPoint(endPointBot);
-        vertex.addEndPoint(endPointTop);
-        model.addElement(vertex);
 
-        updateDiagram();
-    }
-
-
-    public TaskVertexServiceImpl getTaskVertexServiceImpl() {
-        return taskVertexServiceImpl;
-    }
-
-    public void setTaskVertexServiceImpl(TaskVertexServiceImpl taskVertexServiceImpl) {
-        this.taskVertexServiceImpl = taskVertexServiceImpl;
-    }
+//    public TaskVertexServiceImpl getTaskVertexServiceImpl() {
+//        return taskVertexServiceImpl;
+//    }
+//
+//    public void setTaskVertexServiceImpl(TaskVertexServiceImpl taskVertexServiceImpl) {
+//        this.taskVertexServiceImpl = taskVertexServiceImpl;
+//    }
 
     public TaskVertex getTaskVertex() {
         return taskVertex;
@@ -194,6 +233,42 @@ public class TaskGraphController extends AbstractGraphController {
 
     public void setTaskVertex(TaskVertex taskVertex) {
         this.taskVertex = taskVertex;
+    }
+
+    public class NetworkElement implements Serializable {
+
+        private String name;
+        private String image;
+
+        public NetworkElement() {
+        }
+
+        public NetworkElement(String name, String image) {
+            this.name = name;
+            this.image = image;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
     }
 }
 
